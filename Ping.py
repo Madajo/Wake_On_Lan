@@ -14,15 +14,18 @@ class Ping():
 
         for i in ans:
             if i[1][ARP].psrc == self.ip:
-                return True
+                print i[1][Ether].src
+            else:
+                print "Computer OFFLINE"
 
 
-        return False
+        
 
 
 
 
 if __name__ == "__main__":
-    test = Ping("10.92.5.50")
+    test = Ping("10.92.5.99")
     x= test.Run()
     print x
+
