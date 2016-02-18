@@ -66,6 +66,6 @@ class WakeUp():
         
 
 if __name__ == "__main__":
-    testunit = WakeUp("38-60-77-20-BD-8C",2)
+    testunit = WakeUp("6C-3B-E5-24-02-6F",2)
     testunit.Run()
 
