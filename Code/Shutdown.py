@@ -23,7 +23,7 @@ class Shutdown():
     # Create an initial connection if a username & password is given.
     def run(self):
         connected = 0
-        if user and passwrd:
+        if self.user:
             try:
                 win32wnet.WNetAddConnection2(win32netcon.RESOURCETYPE_ANY, None,
                                              ''.join([r'\\', self.host]), None, self.user,
@@ -51,10 +51,11 @@ class Shutdown():
 
 if __name__ == '__main__':
     # Immediate shutdown.
-    Shutdownhutdown('salespc1', 'admin', 'secret', None, 0)
+    x = Shutdown('ws674630', 'User', None, 'Harmatz Gay', 9, reboot=1)
+    x.run()
     # Delayed shutdown 30 secs.
-    Shutdown('salespc1', 'admin', 'secret', 'Maintenance Shutdown', 30)
+    #Shutdown('salespc1', 'admin', 'secret', 'Maintenance Shutdown', 30)
     # Reboot
-    Shutdown('salespc1', 'admin', 'secret', None, 0, reboot=1)
+    #Shutdown('salespc1', 'admin', 'secret', None, 0, reboot=1)
     # Shutdown the local pc
-    Shutdown(None, 'admin', 'secret', None, 0)
+    #Shutdown(None, 'admin', 'secret', None, 0)
