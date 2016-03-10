@@ -1,11 +1,11 @@
-#!/usr/bin/env python
-# win32shutdown.py
 
+#Region - imports
 import win32api
 import win32con
 import win32netcon
 import win32security
 import win32wnet
+#EndRegion - imports
 class Shutdown():
     
 
@@ -51,7 +51,7 @@ class Shutdown():
 
 if __name__ == '__main__':
     # Immediate shutdown.
-    x = Shutdown('ws674630', 'User', None, 'Harmatz Gay', 9, reboot=1)
+    x = Shutdown('ws674630', 'User', None, 'MORIS ', 9, reboot=1)
     x.run()
     # Delayed shutdown 30 secs.
     #Shutdown('salespc1', 'admin', 'secret', 'Maintenance Shutdown', 30)
