@@ -30,11 +30,15 @@ class Network():
     def GetFinGateWay(self):
         GateArray = self.GATEWAY_IP.split(".",4)
         MaskArray = self.SUBNETMASK.split(".",4)
-        addbits = ExponentTwo(MaskArray[0]) + ExponentTwo(MaskArray[1]) + ExponentTwo(MaskArray[2]) + ExponentTwo(MaskArray[3])   
+        addbits = self.ExponentTwo(MaskArray[0]) + self.ExponentTwo(MaskArray[1]) + self.ExponentTwo(MaskArray[2]) + self.ExponentTwo(MaskArray[3])   
     
-        FinalGatway  = str( And(GateArray[0],MaskArray[0])) + "."
-        FinalGatway += str( And(GateArray[1],MaskArray[1])) + "."
-        FinalGatway += str( And(GateArray[2],MaskArray[2])) + "."
-        FinalGatway += str( And(GateArray[3],MaskArray[3])) 
+        FinalGatway  = str( self.And(GateArray[0],MaskArray[0])) + "."
+        FinalGatway += str( self.And(GateArray[1],MaskArray[1])) + "."
+        FinalGatway += str( self.And(GateArray[2],MaskArray[2])) + "."
+        FinalGatway += str( self.And(GateArray[3],MaskArray[3])) 
         FinalGatway += "/" + str(addbits)
         return FinalGatway
+
+if __name__ == "__main__":
+    x = Network().GetFinGateWay()
+    print x
