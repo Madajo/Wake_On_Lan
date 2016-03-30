@@ -1,6 +1,5 @@
 #Region - Imports
 from scapy.all import *
-
 #EndRegion - Imports
 
 class Ping():
@@ -9,24 +8,19 @@ class Ping():
         self.ip = ip
 
     def Run(self): #Checkes if computer is Online or not
-        packet = Ether(dst="ff:ff:ff:ff:ff:ff")/ARP(pdst=self.ip)
-        ans,uans = srp(packet,timeout=1)
-
-        for i in ans:
-            if i[1][ARP].psrc == self.ip:
-                print i[1][Ether].src #Sends Computer MAC address
-                
-            else:
-                return "Offline"
-
-
-                
-        return "Online"
+        packet = IP(dst=self.ip)/ICMP()
+        replay = sr1(packet, timeout=1)
+        
+        
+        if replay is None:
+            return "Offline"
+        else:    
+            return "Online"
 
 
 
 if __name__ == "__main__":
-    test = Ping("10.92.5.99")
+    test = Ping("10.92.5.81")
     x= test.Run()
     print x
 

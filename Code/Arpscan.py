@@ -14,10 +14,10 @@ class Arpscan():
         packet  = Ether(dst="ff:ff:ff:ff:ff:ff")/ARP(pdst = self.Gateway)
         ans, uans = srp(packet, timeout=2)
         for i in ans:
+            
+            print i[1][ARP].psrc + "-" + i[1][ARP].hwsrc
 
-            print i[1][ARP].psrc + " - " + i[1][ARP].hwsrc
-
-            self.arplist.append( (i[1][ARP].psrc + " - " + i[1][ARP].hwsrc) )
+            self.arplist.append( (i[1][ARP].psrc + "-" + i[1][ARP].hwsrc) )
 
         return self.arplist
 
