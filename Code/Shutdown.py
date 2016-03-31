@@ -51,7 +51,7 @@ class Shutdown():
 
 if __name__ == '__main__':
     # Immediate shutdown.
-    x = Shutdown('ws674630', 'User', None, 'שתוק ', 9, reboot=1)
+    x = Shutdown('ws674630', 'User', None, 'Moris ', 9, reboot=1)
     x.run()
     # Delayed shutdown 30 secs.
     #Shutdown('salespc1', 'admin', 'secret', 'Maintenance Shutdown', 30)

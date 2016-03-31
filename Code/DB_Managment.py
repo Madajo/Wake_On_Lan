@@ -3,7 +3,7 @@ import sqlite3
 import Arpscan
 import CIDR
 import Ping
-import time
+import socket
 #EndRegion -- Imports
 
 #Region -- Const
@@ -21,12 +21,13 @@ class DB_Manage():
         #ComplistTemp = Arpscan.Arpscan(Gateway).Scan()
         ComplistTemp = Arpscan.Arpscan("10.92.5.99/24").Scan()
         Complist = list(set(ComplistTemp))
+        self.CorrectList(Complist)
         con = sqlite3.connect(CONST_DB) #Creating Database
         with con:
 
             cur = con.cursor()
             cur.execute("DROP TABLE IF EXISTS " + CONST_TABLE)
-            cur.execute("CREATE TABLE " + CONST_TABLE + "(ID INTEGER PRIMARY KEY AUTOINCREMENT, IP TEXT, MAC TEXT, STATUS TEXT)")
+            cur.execute("CREATE TABLE " + CONST_TABLE + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, IP TEXT, MAC TEXT, STATUS TEXT)")
             i=0
             #--------Entering Data---------------
             while i<len(Complist):
@@ -34,7 +35,7 @@ class DB_Manage():
                 mac = Complist[i].split("-")[1] # Get Comp MAC
                 i += 1
                 #time.sleep(1)
-                cur.execute("INSERT INTO " + CONST_TABLE +"(IP, MAC, STATUS) VALUES(?,?,?)",(ip, mac, "Online"))
+                cur.execute("INSERT INTO " + CONST_TABLE +" (IP, MAC, STATUS) VALUES(?,?,?)",(ip, mac, "Online"))
 
     def UpdateDatabase(self):
         dblist = self.RetreiveDatabase()
@@ -43,24 +44,32 @@ class DB_Manage():
         # ComplistTemp = Arpscan.Arpscan(Gateway).Scan()
         ComplistTemp = Arpscan.Arpscan("10.92.5.99/24").Scan()
         Complist = list(set(ComplistTemp))
+        self.CorrectList(Complist)
         con = sqlite3.connect(CONST_DB)  # Creating Database
         with con:
             cur = con.cursor()
-            cur.execute("UPDATE " + CONST_TABLE + "SET STATUS = Offline WHERE STATUS = Online")
-            for i in Complist:
+            cur.execute("UPDATE " + CONST_TABLE + " SET STATUS = 'Offline' WHERE STATUS = 'Online'")
+            for i in range(0,len(Complist)):
+                ip = Complist[i].split("-")[0]
+                mac = Complist[i].split("-")[1]
                 found = False
-                for j in dblist:
+                for j in range(0,len(dblist)):
 
-                    if dblist[j][1] == Complist[i].split("-")[0] and dblist[j][2] == Complist[i].split("-")[1]:
-                        cur.execute("UPDATE " + CONST_TABLE + "SET STATUS = Online WHERE IP = ? AND MAC = ?", (dblist[i][1],dblist[i][2]))
+                    if dblist[j][1] == ip and dblist[j][2] == mac:
+                        cur.execute("UPDATE " + CONST_TABLE + " SET STATUS = 'Online' WHERE IP = ? AND MAC = ?", (dblist[j][1],dblist[j][2]))
                         found = True
                 if not found:
-                    ip = Complist[i].split("-")[0]
-                    mac = Complist[i].split("-")[1]
-                    cur.execute("INSERT INTO " + CONST_TABLE + "(IP, MAC, STATUS) VALUES(?,?,?",(ip, mac, "Online"))
+                    cur.execute("INSERT INTO " + CONST_TABLE + " (IP, MAC, STATUS) VALUES(?,?,?)",(ip, mac, "Online"))
 
 
-
+    def CorrectList(self,CompList):
+        my_ip = socket.gethostbyname(socket.gethostname())
+        index = -1
+        for i in range(0,len(CompList)):
+            if CompList.split("-")[0] == my_ip:
+                index = i
+        if index != -1:
+            del CompList[i]
 
 
 
@@ -90,4 +99,7 @@ class DB_Manage():
 if __name__ == "__main__":
     x = DB_Manage()
     #x.CreateDatabase()
-    x.RetreiveDatabase()
+    x.UpdateDatabase()
+    pp = x.RetreiveDatabase()
+    for i in pp:
+        print i
