@@ -56,7 +56,11 @@ class DB_Manage():
                 for j in range(0,len(dblist)):
 
                     if dblist[j][1] == ip and dblist[j][2] == mac:
-                        cur.execute("UPDATE " + CONST_TABLE + " SET STATUS = 'Online' WHERE IP = ? AND MAC = ?", (dblist[j][1],dblist[j][2]))
+                        cur.execute("UPDATE " + CONST_TABLE + " SET STATUS = 'Online' WHERE IP = ? AND MAC = ?", (ip, mac))
+                        found = True
+                    if dblist[j][1] != ip and dblist[j][2] == mac:
+                        cur.execute("UPDATE " + CONST_TABLE + " SET IP = ? WHERE MAC = ?", (ip, mac))
+                        cur.execute("UPDATE " + CONST_TABLE + " SET STATUS = 'Online' WHERE IP = ? AND MAC = ?", (ip, mac))
                         found = True
                 if not found:
                     cur.execute("INSERT INTO " + CONST_TABLE + " (IP, MAC, STATUS) VALUES(?,?,?)",(ip, mac, "Online"))
@@ -66,10 +70,10 @@ class DB_Manage():
         my_ip = socket.gethostbyname(socket.gethostname())
         index = -1
         for i in range(0,len(CompList)):
-            if CompList.split("-")[0] == my_ip:
+            if CompList[i].split("-")[0] == my_ip:
                 index = i
         if index != -1:
-            del CompList[i]
+            del CompList[index]
 
 
 
