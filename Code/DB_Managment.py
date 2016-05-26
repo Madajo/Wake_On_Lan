@@ -16,10 +16,10 @@ class DB_Manage():
         pass
 
     def CreateDatabase(self):
-        #WMI = CIDR.Network()            """--Use WMI Only when not in HADASH School--"""
-        #GateWay = WMI.GetFinGateWay()
-        #ComplistTemp = Arpscan.Arpscan(Gateway).Scan()
-        ComplistTemp = Arpscan.Arpscan("10.92.5.99/24").Scan()
+        WMI = CIDR.Network()            #----Use WMI Only when not in HADASH School----
+        GateWay = WMI.GetFinGateWay()
+        ComplistTemp = Arpscan.Arpscan(GateWay).Scan()
+        #ComplistTemp = Arpscan.Arpscan("10.92.5.99/24").Scan()   #----Use Only in HADASH School----
         Complist = list(set(ComplistTemp))
         self.CorrectList(Complist)
         con = sqlite3.connect(CONST_DB) #Creating Database
@@ -39,21 +39,21 @@ class DB_Manage():
 
     def UpdateDatabase(self):
         dblist = self.RetreiveDatabase()
-        # WMI = CIDR.Network()            """--Use WMI Only when not in HADASH School--"""
-        # GateWay = WMI.GetFinGateWay()
-        # ComplistTemp = Arpscan.Arpscan(Gateway).Scan()
-        ComplistTemp = Arpscan.Arpscan("10.92.5.99/24").Scan()
+        WMI = CIDR.Network()            #----Use WMI Only when not in HADASH School----
+        GateWay = WMI.GetFinGateWay()
+        ComplistTemp = Arpscan.Arpscan(GateWay).Scan()
+        #ComplistTemp = Arpscan.Arpscan("10.92.5.99/24").Scan()  #----Use Only in HADASH School----
         Complist = list(set(ComplistTemp))
         self.CorrectList(Complist)
         con = sqlite3.connect(CONST_DB)  # Creating Database
         with con:
             cur = con.cursor()
             cur.execute("UPDATE " + CONST_TABLE + " SET STATUS = 'Offline' WHERE STATUS = 'Online'")
-            for i in range(0,len(Complist)):
+            for i in range(0,len(Complist)-1):
                 ip = Complist[i].split("-")[0]
                 mac = Complist[i].split("-")[1]
                 found = False
-                for j in range(0,len(dblist)):
+                for j in range(0,len(dblist)-1):
 
                     if dblist[j][1] == ip and dblist[j][2] == mac:
                         cur.execute("UPDATE " + CONST_TABLE + " SET STATUS = 'Online' WHERE IP = ? AND MAC = ?", (ip, mac))
@@ -97,6 +97,24 @@ class DB_Manage():
             except:
                 return False
 
+    def ChangeToOnline(self,ip,mac):
+        dblist = self.RetreiveDatabase()
+        con = sqlite3.connect(CONST_DB)
+        with con:
+            cur = con.cursor()
+            for i in range(0,len(dblist)):
+                if dblist[i][1] == ip and dblist[i][2] == mac:
+                    cur.execute("UPDATE " + CONST_TABLE + " SET STATUS = 'Online' WHERE IP = ? AND MAC = ?", (ip, mac))
+
+    def ChangeToOffline(self,ip,mac):
+        dblist = self.RetreiveDatabase()
+        con = sqlite3.connect(CONST_DB)
+        with con:
+            cur = con.cursor()
+            for i in range(0,len(dblist)):
+                if dblist[i][1] == ip and dblist[i][2] == mac:
+                    cur.execute("UPDATE " + CONST_TABLE + " SET STATUS = 'Offline' WHERE IP = ? AND MAC = ?", (ip, mac))
+
 
 
 
@@ -104,6 +122,7 @@ if __name__ == "__main__":
     x = DB_Manage()
     #x.CreateDatabase()
     x.UpdateDatabase()
+    #x.ChangeToOffline('10.0.0.138','e8:fc:af:9b:4c:96')
     pp = x.RetreiveDatabase()
     for i in pp:
         print i
