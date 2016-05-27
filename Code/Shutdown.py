@@ -5,6 +5,7 @@ import win32con
 import win32netcon
 import win32security
 import win32wnet
+
 #EndRegion - imports
 class Shutdown():
     
@@ -51,7 +52,7 @@ class Shutdown():
 
 if __name__ == '__main__':
     # Immediate shutdown.
-    x = Shutdown('10.0.0.5', 'Keren Eyal Kotlizky', 'R2dtoo13' , 'Moris ', 9, reboot=1)
+    x = Shutdown('10.0.0.18', 'User', '' , 'Moris ', 9, reboot=1 ,)
     x.run()
     # Delayed shutdown 30 secs.
     #Shutdown('salespc1', 'admin', 'secret', 'Maintenance Shutdown', 30)
