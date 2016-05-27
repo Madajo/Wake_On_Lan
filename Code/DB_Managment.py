@@ -106,14 +106,14 @@ class DB_Manage():
                 if dblist[i][1] == ip and dblist[i][2] == mac:
                     cur.execute("UPDATE " + CONST_TABLE + " SET STATUS = 'Online' WHERE IP = ? AND MAC = ?", (ip, mac))
 
-    def ChangeToOffline(self,ip,mac):
+    def ChangeToOffline(self,ip):
         dblist = self.RetreiveDatabase()
         con = sqlite3.connect(CONST_DB)
         with con:
             cur = con.cursor()
             for i in range(0,len(dblist)):
-                if dblist[i][1] == ip and dblist[i][2] == mac:
-                    cur.execute("UPDATE " + CONST_TABLE + " SET STATUS = 'Offline' WHERE IP = ? AND MAC = ?", (ip, mac))
+                if dblist[i][1] == ip :
+                    cur.execute("UPDATE " + CONST_TABLE + " SET STATUS = 'Offline' WHERE IP = ?", (ip))
 
 
 
