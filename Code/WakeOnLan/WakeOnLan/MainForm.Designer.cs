@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.ListViewComps = new System.Windows.Forms.ListView();
             this.IP = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.MAC = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -40,9 +39,10 @@
             this.wakeUpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.shutdownToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.remoteDesktopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.WakeUpAll = new System.Windows.Forms.Button();
+            this.ShutDownAll = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.contextMenuStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // ListViewComps
@@ -87,9 +87,9 @@
             // 
             // Refresh
             // 
-            this.Refresh.Location = new System.Drawing.Point(397, 336);
+            this.Refresh.Location = new System.Drawing.Point(418, 336);
             this.Refresh.Name = "Refresh";
-            this.Refresh.Size = new System.Drawing.Size(75, 23);
+            this.Refresh.Size = new System.Drawing.Size(84, 23);
             this.Refresh.TabIndex = 2;
             this.Refresh.Text = "Refresh";
             this.Refresh.UseVisualStyleBackColor = true;
@@ -126,21 +126,53 @@
             this.remoteDesktopToolStripMenuItem.Text = "Remote Desktop";
             this.remoteDesktopToolStripMenuItem.Click += new System.EventHandler(this.remoteDesktopToolStripMenuItem_Click);
             // 
-            // pictureBox1
+            // WakeUpAll
             // 
-            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(413, 166);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(100, 71);
-            this.pictureBox1.TabIndex = 3;
-            this.pictureBox1.TabStop = false;
+            this.WakeUpAll.BackColor = System.Drawing.Color.SpringGreen;
+            this.WakeUpAll.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.WakeUpAll.Location = new System.Drawing.Point(418, 198);
+            this.WakeUpAll.Name = "WakeUpAll";
+            this.WakeUpAll.Size = new System.Drawing.Size(95, 23);
+            this.WakeUpAll.TabIndex = 3;
+            this.WakeUpAll.Text = "Wake Up All";
+            this.WakeUpAll.UseVisualStyleBackColor = false;
+            this.WakeUpAll.Click += new System.EventHandler(this.WakeUpAll_Click);
+            // 
+            // ShutDownAll
+            // 
+            this.ShutDownAll.BackColor = System.Drawing.Color.DeepPink;
+            this.ShutDownAll.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ShutDownAll.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.ShutDownAll.Location = new System.Drawing.Point(418, 238);
+            this.ShutDownAll.Name = "ShutDownAll";
+            this.ShutDownAll.Size = new System.Drawing.Size(95, 23);
+            this.ShutDownAll.TabIndex = 4;
+            this.ShutDownAll.Text = "Shut Down All";
+            this.ShutDownAll.UseVisualStyleBackColor = false;
+            this.ShutDownAll.Click += new System.EventHandler(this.ShutDownAll_Click);
+            // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.Color.Aqua;
+            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.button1.Location = new System.Drawing.Point(30, 24);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 5;
+            this.button1.Text = "Schedule";
+            this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.ControlLight;
             this.ClientSize = new System.Drawing.Size(525, 408);
-            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.button1);
+            this.Controls.Add(this.ShutDownAll);
+            this.Controls.Add(this.WakeUpAll);
             this.Controls.Add(this.Refresh);
             this.Controls.Add(this.WOL_Status);
             this.Controls.Add(this.ListViewComps);
@@ -149,7 +181,6 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.contextMenuStrip1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -167,7 +198,9 @@
         private System.Windows.Forms.ToolStripMenuItem wakeUpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem shutdownToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem remoteDesktopToolStripMenuItem;
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Button WakeUpAll;
+        private System.Windows.Forms.Button ShutDownAll;
+        private System.Windows.Forms.Button button1;
     }
 }
 

@@ -17,7 +17,7 @@ namespace WakeOnLan
     public partial class MainForm : Form
     {
         public PythonListener pythonListener;
-
+        public ScheduleForm scheduleform;
 
         public MainForm()
         {
@@ -63,7 +63,8 @@ namespace WakeOnLan
         
         private void MainForm_Load(object sender, EventArgs e)
         {
-
+            System.Threading.Thread.Sleep(1000);
+            pythonListener.Send("GetDB");
         }
 
 
@@ -133,9 +134,42 @@ namespace WakeOnLan
             shutdownform.ShowDialog();
         }
 
-        
+        private void WakeUpAll_Click(object sender, EventArgs e)
+        {
+            pythonListener.Send("WakeUpAll#");
+        }
 
+        private void ShutDownAll_Click(object sender, EventArgs e)
+        {
+            ListViewItem item = new ListViewItem("All");
+            item.SubItems.Add("All");
+            ShutDownForm shutdownform = new ShutDownForm(this, pythonListener, item);
+            shutdownform.ShowDialog();
+
+        }
+
+
+        public void RemoveTask(string[] task)
+        {
+            pythonListener.Send("RemoveFromSchedule#" + task[0] + "#" + task[1] + "#" + task[2]);
         
+        }
+        public void SendTasks(string[] tasks)
+        {
+            scheduleform.AddTasks(tasks);
+        }
+
+        public void ClearSchedule()
+        {
+            pythonListener.Send("ClearSchedule#");
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            pythonListener.Send("GetSchedule#");
+            scheduleform = new ScheduleForm(this, ListViewComps);
+            scheduleform.ShowDialog();
+        }
 
     }
 }

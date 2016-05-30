@@ -90,7 +90,11 @@ namespace WakeOnLan
         private void Schedule(string tasks)
         {
             string[] addr = tasks.Split('@');
-            //this.mainform.AddTasks(addr);
+            this.mainform.Invoke((MethodInvoker)delegate
+            {
+                this.mainform.SendTasks(addr);
+            });
+            
         }
         #endregion ----- State Machine Functions -----
         // Send Message to Python Engine

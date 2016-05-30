@@ -61,8 +61,18 @@ namespace WakeOnLan
             }
             if (timeout != "" && msg != "")
             {
-                Pythonlistener.Send("ShutDownComp#" + label_ip.Text + "#" + msg + "#" + timeout + "#" + forcenum.ToString() + "#" + rebootnum.ToString());
-                this.Close();
+                if (label_ip.Text == "All" && label_mac.Text == "All")
+                {
+                    Pythonlistener.Send("ShutDownAll#" + msg + "#" + timeout + "#" + forcenum.ToString() + "#" + rebootnum.ToString());
+                    this.Close();
+                }
+                else
+                {
+                    Pythonlistener.Send("ShutDownComp#" + label_ip.Text + "#" + msg + "#" + timeout + "#" + forcenum.ToString() + "#" + rebootnum.ToString());
+                    this.Close();
+                }
+
+                
     
             }
 

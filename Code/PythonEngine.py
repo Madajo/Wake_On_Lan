@@ -66,9 +66,9 @@ class GUI(threading.Thread):
                 if command[0] == "GetSchedule":
                     self.state_machine["GetSchedule"]()
                 if command[0] == "AddSchedule":
-                    self.state_machine["AddSchedule"](command[1],command[2],command[3],command[4],command[5])
+                    self.state_machine["AddSchedule"](command[1],command[2],command[3])
                 if command[0] == "RemoveFromSchedule":
-                    self.state_machine["RemoveFromSchedule"](command[1],command[2],command[3],command[4],command[5])
+                    self.state_machine["RemoveFromSchedule"](command[1],command[2],command[3])
                 if command[0] == "ClearSchedule":
                     self.state_machine["ClearSchedule"]()
 
@@ -86,6 +86,7 @@ class GUI(threading.Thread):
     def WakeUpAll(self):
         dblist = DB_Manage().RetreiveDatabase()
         error = False
+        self.GuiSock.send("CompStatus#Waking Up Computers.. ")
         if len(dblist) > 0:
             for i in range(0,len(dblist)-1):
                 if dblist[i][2] != 'Online':
@@ -117,15 +118,18 @@ class GUI(threading.Thread):
         password = ''
         error = False
         dblist = DB_Manage().RetreiveDatabase()
+        self.GuiSock.send("CompStatus#All Computers Shutting down.. ")
         if len(dblist) > 0:
             for i in range(0,len(dblist)-1):
-                try:
-                    Shutdown(dblist[i][0],user,password,msg,int(timeout),int(force),int(reboot)).run()
-                    DB_Manage().ChangeToOffline(dblist[i][1])
-                except:
-                    error = True
+                if dblist[i][2] != 'Offline':
+                    print "Shutting Down  " + dblist[i][0]
+                    try:
+                        Shutdown(dblist[i][0],user,password,msg,int(timeout),int(force),int(reboot)).run()
+                        DB_Manage().ChangeToOffline(dblist[i][1])
+                    except:
+                        error = True
         if error is False:
-            self.GuiSock.send("CompStatus#All Computers Shutting down.. ")
+            self.GuiSock.send("CompStatus#All Computers Shut Down! ")
         else:
             self.GuiSock.send("CompStatus#Error Occurred with some of Computers Shutting down.. ")
 
@@ -177,20 +181,20 @@ class GUI(threading.Thread):
             tasklist = Schudler().RetreiveTasks()
             mes = "Schedule#"
             for i in range(0,len(tasklist)-1):
-                mes += tasklist[i][0] + "&" + tasklist[i][1] + "&" + tasklist[i][2] + "&" + tasklist[i][3] + "&" + tasklist[i][4] + "@"
+                mes += tasklist[i][0] + "&" + tasklist[i][1] + "&" + tasklist[i][2] + "@"
 
             self.GuiSock.send(mes)
             time.sleep(0.5)
             self.GuiSock.send("CompStatus#End Grabing Schedule")
             time.sleep(1)
 
-    def AddSchedule(self,functype,comp,timer,day,date):
-        task = (functype,comp,timer,day,date)
+    def AddSchedule(self,functype,comp,timer):
+        task = (functype,comp,timer)
         Schudler().AddTask(task)
         self.GuiSock.send("CompStatus#Schedule Added")
 
-    def RemoveFromSchedule(self,functype,comp,timer,day,date):
-        task = (functype,comp,timer,day,date)
+    def RemoveFromSchedule(self,functype,comp,timer,):
+        task = (functype,comp,timer)
         Schudler().RemoveTask(task)
         self.GuiSock.send("CompStatus#Schedule Removed")
 

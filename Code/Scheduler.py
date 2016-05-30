@@ -18,14 +18,14 @@ class Schudler():
         with con:
             cur = con.cursor()
             cur.execute("DROP TABLE IF EXISTS " + CONST_TABLE)
-            cur.execute("CREATE TABLE " + CONST_TABLE + " (FUNCTYPE TEXT, COMP TEXT, TIME TIME, DAY INT, DATE DATEIME)")
+            cur.execute("CREATE TABLE " + CONST_TABLE + " (FUNCTYPE TEXT, COMP TEXT, TIME TEXT)")
 
 
     def AddTask(self,task):
         con = sqlite3.connect(CONST_DB)
         with con:
             cur = con.cursor()
-            cur.execute("INSERT INTO " + CONST_TABLE + "(FUNCTYPE, COMP, TIME, DAY, DATE) " + "VALUES(?,?,?,?,?)", task )
+            cur.execute("INSERT INTO " + CONST_TABLE + "(FUNCTYPE, COMP, TIME) " + "VALUES(?,?,?)", task)
 
     def CheckIfTableExsits(self):
         con = sqlite3.connect(CONST_DB)
@@ -53,7 +53,7 @@ class Schudler():
         with con:
             cur = con.cursor()
             for i in range(0,len(tasklist)-1):
-                if tasklist[i][0] == task[0] and tasklist[i][1] == task[1] and tasklist[i][2] == task[2] and tasklist[i][3] == task[3] and tasklist[i][4] == task[4]:
-                    cur.execute("DELETE FROM " + CONST_TABLE + " WHERE FUNCTYPE = ? AND COMP = ? AND TIME = ? AND DAY = ? AND DATE = ? " , task)
+                if tasklist[i][0] == task[0] and tasklist[i][1] == task[1] and tasklist[i][2] == task[2]:
+                    cur.execute("DELETE FROM " + CONST_TABLE + " WHERE FUNCTYPE = ? AND COMP = ? AND TIME = ? ", task)
 
 
