@@ -1,0 +1,11 @@
+c:\users\daniel\documents\visual studio 2013\Projects\WakeOnLan\WakeOnLan\bin\Debug\WakeOnLan.exe.config
+C:\Users\daniel\Desktop\Wake_On_Lan\Code\WakeOnLan\WakeOnLan\bin\Debug\WakeOnLan.exe.config
+C:\Users\daniel\Desktop\Wake_On_Lan\Code\WakeOnLan\WakeOnLan\obj\Debug\WakeOnLan.csprojResolveAssemblyReference.cache
+C:\Users\daniel\Desktop\Wake_On_Lan\Code\WakeOnLan\WakeOnLan\obj\Debug\WakeOnLan.Properties.Resources.resources
+C:\Users\daniel\Desktop\Wake_On_Lan\Code\WakeOnLan\WakeOnLan\obj\Debug\WakeOnLan.csproj.GenerateResource.Cache
+C:\Users\daniel\Desktop\Wake_On_Lan\Code\WakeOnLan\WakeOnLan\bin\Debug\WakeOnLan.exe
+C:\Users\daniel\Desktop\Wake_On_Lan\Code\WakeOnLan\WakeOnLan\bin\Debug\WakeOnLan.pdb
+C:\Users\daniel\Desktop\Wake_On_Lan\Code\WakeOnLan\WakeOnLan\obj\Debug\WakeOnLan.exe
+C:\Users\daniel\Desktop\Wake_On_Lan\Code\WakeOnLan\WakeOnLan\obj\Debug\WakeOnLan.pdb
+C:\Users\daniel\Desktop\Wake_On_Lan\Code\WakeOnLan\WakeOnLan\obj\Debug\WakeOnLan.MainForm.resources
+C:\Users\daniel\Desktop\Wake_On_Lan\Code\WakeOnLan\WakeOnLan\obj\Debug\WakeOnLan.ShutDownForm.resources

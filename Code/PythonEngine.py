@@ -35,9 +35,12 @@ class GUI(threading.Thread):
         threading.Thread.__init__(self)
         while True:
             try:
+                print "Trying to con"
                 self.GuiSock.connect(('127.0.0.1', GUI_PORT))
+                print "Sucsses!"
                 break
             except socket.error:
+                print "fail"
                 continue
 
 
@@ -75,9 +78,9 @@ class GUI(threading.Thread):
         try:
             WakeUp(mac).Run()
             DB_Manage().ChangeToOnline(ip,mac)
-            self.GuiSock.send("WakeUpStatus#Computer Awakening!")
+            self.GuiSock.send("CompStatus#Computer Awakening!")
         except:
-            self.GuiSock.send("WakeUpStatus#Error Occurred while Waking Up Computer")
+            self.GuiSock.send("CompStatus#Error Occurred while Waking Up Computer")
         time.sleep(1)
 
     def WakeUpAll(self):
@@ -85,17 +88,17 @@ class GUI(threading.Thread):
         error = False
         if len(dblist) > 0:
             for i in range(0,len(dblist)-1):
-                if dblist[i][3] != 'Online':
+                if dblist[i][2] != 'Online':
                     try:
-                        WakeUp(dblist[i][2]).Run()
-                        DB_Manage().ChangeToOnline(dblist[i][1],dblist[i][2])
+                        WakeUp(dblist[i][1]).Run()
+                        DB_Manage().ChangeToOnline(dblist[i][0],dblist[i][1])
                     except:
                         error = True
 
         if error is False:
-            self.GuiSock.send("WakeUpStatus#All Computers are Awake!")
+            self.GuiSock.send("CompStatus#All Computers are Awake!")
         else:
-            self.GuiSock.send("WakeUpStatus#Errors Occurred With Some of the Computers")
+            self.GuiSock.send("CompStatus#Errors Occurred With Some of the Computers")
         time.sleep(1)
 
     def ShutDownComp(self,ip,msg,timeout,force,reboot):
@@ -104,9 +107,9 @@ class GUI(threading.Thread):
         try:
             Shutdown(ip,user,password,msg,int(timeout),int(force),int(reboot)).run()
             DB_Manage().ChangeToOffline(ip)
-            self.GuiSock.send("ShutDownStatus#Compter Shutting down.. ")
+            self.GuiSock.send("CompStatus#Compter Shutting down.. ")
         except:
-            self.GuiSock.send("ShutDownStatus#Error Occurred with Shutting down Computer .. Try Again Later")
+            self.GuiSock.send("CompStatus#Error Occurred with Shutting down Computer .. Try Again Later")
         time.sleep(1)
 
     def ShutDownAll(self,msg,timeout,force,reboot):
@@ -117,60 +120,60 @@ class GUI(threading.Thread):
         if len(dblist) > 0:
             for i in range(0,len(dblist)-1):
                 try:
-                    Shutdown(dblist[i][1],user,password,msg,int(timeout),int(force),int(reboot)).run()
+                    Shutdown(dblist[i][0],user,password,msg,int(timeout),int(force),int(reboot)).run()
                     DB_Manage().ChangeToOffline(dblist[i][1])
                 except:
                     error = True
         if error is False:
-            self.GuiSock.send("ShutDownStatus#All Computers Shutting down.. ")
+            self.GuiSock.send("CompStatus#All Computers Shutting down.. ")
         else:
-            self.GuiSock.send("ShutDownStatus#Error Occurred with some of Computers Shutting down.. ")
+            self.GuiSock.send("CompStatus#Error Occurred with some of Computers Shutting down.. ")
 
     def RemoteDesktop(self,ip):
         try:
             RemoteDesktop(ip).Run()
-            self.GuiSock.send("RemoteDesktopStatus#Takeing Over Computer..")
+            self.GuiSock.send("CompStatus#Takeing Over Computer..")
         except:
-            self.GuiSock.send("RemoteDesktopStatus#Error Occurred while Takeing Over Computer.. Check Remote Dekstop is Allowed on Computer ")
+            self.GuiSock.send("CompStatus#Error Occurred while Takeing Over Computer.. Check Remote Dekstop is Allowed on Computer ")
 
     def GetDB(self):
         if DB_Manage().CheckIfTableExsits() is False:
-            self.GuiSock.send("DBStatus#Creating DataBase.. Scaning Network")
+            self.GuiSock.send("CompStatus#Creating DataBase.. Scaning Network")
             DB_Manage().CreateDatabase()
             print("Creating DB")
         else:
-            self.GuiSock.send("DBStatus#Grabing DataBase")
+            self.GuiSock.send("CompStatus#Grabing DataBase")
 
         dblist = DB_Manage().RetreiveDatabase()
         mes = "DataBase#"
         if len(dblist) > 0:
             for i in range(0,len(dblist)-1):
-                mes += dblist[i][0] + "&" + dblist[i][1] + "&" + dblist[i][2] + "&" + dblist[i][3] + "@"
+                mes +=  dblist[i][0] + "&" + dblist[i][1] + "&" + dblist[i][2] + "@"
 
             self.GuiSock.send(mes)
             time.sleep(0.5)
-            self.GuiSock.send("DBStatus#End Grabing DataBase")
+            self.GuiSock.send("CompStatus#End Grabing DataBase")
             time.sleep(1)
 
     def UpdateDB(self):
-        self.GuiSock.send("DBStatus#Updating DataBase")
+        self.GuiSock.send("CompStatus#Updating DataBase")
         DB_Manage().UpdateDatabase()
         dblist = DB_Manage().RetreiveDatabase()
         mes = "DataBase#"
         if len(dblist) > 0:
             for i in range(0,len(dblist)-1):
-                mes += dblist[i][0] + "&" + dblist[i][1] + "&" + dblist[i][2] + "&" + dblist[i][3] + "@"
+                mes += dblist[i][0] + "&" + dblist[i][1] + "&" + dblist[i][2] + "@"
 
             self.GuiSock.send(mes)
             time.sleep(0.5)
-            self.GuiSock.send("DBStatus#End Grabing DataBase")
+            self.GuiSock.send("CompStatus#End Grabing DataBase")
             time.sleep(1)
 
     def GetSchedule(self):
         if Schudler().CheckIfTableExsits() is False:
-            self.GuiSock.send("ScheduleStatus#Schedule is empty")
+            self.GuiSock.send("CompStatus#Schedule is empty")
         else:
-            self.GuiSock.send("ScheduleStatus#Grabing Schedule..")
+            self.GuiSock.send("CompStatus#Grabing Schedule..")
             tasklist = Schudler().RetreiveTasks()
             mes = "Schedule#"
             for i in range(0,len(tasklist)-1):
@@ -178,28 +181,28 @@ class GUI(threading.Thread):
 
             self.GuiSock.send(mes)
             time.sleep(0.5)
-            self.GuiSock.send("ScheduleStatus#End Grabing Schedule")
+            self.GuiSock.send("CompStatus#End Grabing Schedule")
             time.sleep(1)
 
     def AddSchedule(self,functype,comp,timer,day,date):
         task = (functype,comp,timer,day,date)
         Schudler().AddTask(task)
-        self.GuiSock.send("ScheduleStatus#Schedule Added")
+        self.GuiSock.send("CompStatus#Schedule Added")
 
     def RemoveFromSchedule(self,functype,comp,timer,day,date):
         task = (functype,comp,timer,day,date)
         Schudler().RemoveTask(task)
-        self.GuiSock.send("ScheduleStatus#Schedule Removed")
+        self.GuiSock.send("CompStatus#Schedule Removed")
 
-    def ClerSchedule(self):
+    def ClearSchedule(self):
         Schudler().ClearTasks()
-        self.GuiSock.send("ScheduleStatus#Schedule DataBase Cleared")
+        self.GuiSock.send("CompStatus#Schedule DataBase Cleared")
 
 
 
 
 
-
+x = GUI().Run()
 
 
 

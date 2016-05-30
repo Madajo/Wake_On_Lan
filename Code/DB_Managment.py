@@ -27,7 +27,7 @@ class DB_Manage():
 
             cur = con.cursor()
             cur.execute("DROP TABLE IF EXISTS " + CONST_TABLE)
-            cur.execute("CREATE TABLE " + CONST_TABLE + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, IP TEXT, MAC TEXT, STATUS TEXT)")
+            cur.execute("CREATE TABLE " + CONST_TABLE + " (IP TEXT, MAC TEXT, STATUS TEXT)")
             i=0
             #--------Entering Data---------------
             while i<len(Complist):
@@ -120,8 +120,8 @@ class DB_Manage():
 
 if __name__ == "__main__":
     x = DB_Manage()
-    #x.CreateDatabase()
-    x.UpdateDatabase()
+    x.CreateDatabase()
+    #x.UpdateDatabase()
     #x.ChangeToOffline('10.0.0.138','e8:fc:af:9b:4c:96')
     pp = x.RetreiveDatabase()
     for i in pp:
